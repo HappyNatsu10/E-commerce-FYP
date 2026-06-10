@@ -1,3 +1,4 @@
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 import React, { useState, useEffect } from 'react';
 import { ShoppingBag, ShoppingCart, Trash2, CreditCard, CheckCircle2, ShieldAlert, Sparkles, Building2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -105,7 +106,7 @@ export default function App() {
   // Check connection to SmartTax API
   const checkTelemetry = async () => {
     try {
-      const res = await fetch('http://localhost:3001/health');
+      const res = await fetch(`${API_BASE_URL}/health`);
       if (res.ok) {
         setTelemetry('connected');
       } else {
@@ -119,7 +120,7 @@ export default function App() {
   // Fetch list of registered merchants/users dynamically from the SmartTax backend
   const fetchMerchants = async () => {
     try {
-      const res = await fetch('http://localhost:3001/api/users');
+      const res = await fetch(`${API_BASE_URL}/api/users`);
       if (res.ok) {
         const data = await res.json();
         if (data && data.length > 0) {
@@ -189,7 +190,7 @@ export default function App() {
 
     try {
       // Post payload to SmartTax webhook endpoint matching event structure, passing selected userId as query parameter
-      const response = await fetch(`http://localhost:3001/api/webhooks/${paymentGateway}?userId=${selectedMerchantId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/webhooks/${paymentGateway}?userId=${selectedMerchantId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
